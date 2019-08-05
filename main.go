@@ -209,7 +209,7 @@ func wrapper(f func(w http.ResponseWriter, r *http.Request)) http.Handler {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
-		w.Header().Set(w, "Accept-Ranges", "bytes")
+		w.Header().Set("Accept-Ranges", "bytes")
 		proc := time.Now()
 		addr := r.RemoteAddr
 		if ip, found := header(r, "X-Forwarded-For"); found {
