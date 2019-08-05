@@ -7,9 +7,9 @@ RUN go get -u github.com/golang/dep/...
 WORKDIR /go/src/github.com/golang/dep
 RUN git checkout v0.5.0 > /dev/null 2>&1
 RUN go install github.com/golang/dep/...
-RUN go get -u github.com/pottava/aws-s3-proxy
-WORKDIR /go/src/github.com/pottava/aws-s3-proxy
-RUN git checkout v1.4.1 > /dev/null 2>&1
+RUN go get -u github.com/supaggregator/aws-s3-proxy
+WORKDIR /go/src/github.com/supaggregator/aws-s3-proxy
+RUN git checkout master > /dev/null 2>&1
 RUN dep ensure
 RUN go build -a -installsuffix cgo -ldflags "-s -w"
 
@@ -21,5 +21,5 @@ ENV AWS_REGION=us-east-1 \
     CONTENT_ENCODING=true
 
 RUN apk add --no-cache ca-certificates
-COPY --from=build-env /go/src/github.com/pottava/aws-s3-proxy/aws-s3-proxy /aws-s3-proxy
+COPY --from=build-env /go/src/github.com/supaggregator/aws-s3-proxy/aws-s3-proxy /aws-s3-proxy
 ENTRYPOINT ["/aws-s3-proxy"]
