@@ -209,6 +209,7 @@ func wrapper(f func(w http.ResponseWriter, r *http.Request)) http.Handler {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
+		w.Header().Set(w, "Accept-Ranges", "bytes")
 		proc := time.Now()
 		addr := r.RemoteAddr
 		if ip, found := header(r, "X-Forwarded-For"); found {
@@ -355,7 +356,6 @@ func setHeadersFromAwsResponse(w http.ResponseWriter, obj *s3.GetObjectOutput) {
 	setStrHeader(w, "Content-Range", obj.ContentRange)
 	setStrHeader(w, "Content-Type", obj.ContentType)
 	setStrHeader(w, "ETag", obj.ETag)
-	setStrHeader(w, "Accept-Ranges", "bytes")
 	setTimeHeader(w, "Last-Modified", obj.LastModified)
 
 	httpStatus := determineHTTPStatus(obj)
